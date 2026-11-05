@@ -532,25 +532,15 @@ if (count($breadcrumbsItems) > 1) {
             <a href="/iletisim" class="top-pill top-pill-geo" title="Salihli Merkez Ofisimizde Yüz Yüze Görüşme">
                 <span>📍 Salihli Ofis (Yüz Yüze)</span>
             </a>
-            <span class="top-bar-divider" aria-hidden="true">|</span>
-            <div class="top-bar-links">
-                <a href="/blog" class="<?= $page === 'blog' ? 'is-active' : '' ?>">📰 Rehber Blog</a>
-                <?php if ($instaUrl = get_instagram_url()): ?>
-                    <a href="<?= e($instaUrl) ?>" target="_blank" rel="noopener" class="top-link-instagram" title="Salihli Koçluk Instagram">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                        <span>Instagram</span>
-                    </a>
-                <?php endif; ?>
-                <a href="/iletisim" class="<?= $page === 'iletisim' ? 'is-active' : '' ?>">💬 İletişim</a>
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <?php if ($email = setting('email')): ?>
-                <a href="mailto:<?= e($email) ?>" class="top-contact-link" title="E-Posta Gönder">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <span><?= e($email) ?></span>
+            <?php if ($instaUrl = get_instagram_url()): ?>
+                <span class="top-bar-divider" aria-hidden="true">|</span>
+                <a href="<?= e($instaUrl) ?>" target="_blank" rel="noopener" class="top-link-instagram" title="Salihli Koçluk Instagram">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    <span>Instagram</span>
                 </a>
             <?php endif; ?>
+        </div>
+        <div class="top-bar-right">
             <?php if ($phone = setting('phone')): ?>
                 <a href="tel:<?= e(preg_replace('/[^0-9+]/', '', $phone)) ?>" class="top-contact-link" title="Telefonla Ara">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
@@ -1717,9 +1707,9 @@ if (count($breadcrumbsItems) > 1) {
                 <a href="/#sss">Sıkça Sorulan Sorular</a>
             </div>
             <div class="footer-nav-col">
-                <h5>Kurumsal &amp; İletişim</h5>
+                <h5>Kurumsal &amp; Bilgi</h5>
                 <a href="/hakkimda">Koç Hakkında</a>
-                <a href="/blog">YKS Rehber Blogu</a>
+                <a href="/blog">Rehber Blog</a>
                 <a href="/iletisim">Ön Görüşme Randevusu</a>
                 <a href="/gizlilik">Gizlilik ve KVKK</a>
             </div>

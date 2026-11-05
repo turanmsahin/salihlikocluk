@@ -149,25 +149,33 @@ h1, h2, h3, h4, p { margin-top: 0; }
     font-weight: 700;
 }
 
-.top-bar-links .top-link-instagram {
+.top-link-instagram {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    font-size: 12px;
     color: #db2777;
     font-weight: 600;
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #fdf2f8;
+    border: 1px solid #fbcfe8;
     transition: all 0.2s ease;
 }
 
-.top-bar-links .top-link-instagram svg {
+.top-link-instagram svg {
     color: #db2777;
     transition: transform 0.2s ease;
 }
 
-.top-bar-links .top-link-instagram:hover {
-    color: #e11d48;
+.top-link-instagram:hover {
+    color: #be185d;
+    background: #fce7f3;
+    border-color: #f472b6;
 }
 
-.top-bar-links .top-link-instagram:hover svg {
+.top-link-instagram:hover svg {
     transform: scale(1.15) rotate(-3deg);
 }
 
