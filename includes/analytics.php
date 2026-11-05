@@ -123,7 +123,7 @@ function format_referrer(string $ref): string
     if (str_contains($host, 'youtube.')) {
         return '▶️ YouTube';
     }
-    if (str_contains($host, 'salihlikocluk.com')) {
+    if (str_contains($host, 'salihlikocluk.com.tr') || str_contains($host, 'salihlikocluk.com')) {
         return 'Site İçi Dolaşım';
     }
 

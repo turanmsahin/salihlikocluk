@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /storage/
 
-Sitemap: https://salihlikocluk.com/sitemap.xml
+Sitemap: https://www.salihlikocluk.com.tr/sitemap.xml

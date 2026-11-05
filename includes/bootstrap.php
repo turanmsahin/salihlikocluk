@@ -191,7 +191,7 @@ $defaultSettings = [
     'coach_approach' => 'Her öğrencinin çalışma temposu ve hedefleri kendine özgüdür. Ofisimizde yüz yüze periyodik görüşmeler, düzenli hedef ve deneme takibi ile disiplinli ve sürdürülebilir bir hazırlık süreci yürütüyoruz.',
     'phone' => '+90 544 344 24 49',
     'whatsapp' => '905443442449',
-    'email' => 'iletisim@salihlikocluk.com',
+    'email' => 'iletisim@salihlikocluk.com.tr',
     'location' => 'Salihli, Manisa (Fiziksel Ofis)',
     'working_model' => 'Salihli’de Yüz Yüze (Fiziksel Ofis) & Hibrit',
     'instagram' => '',
@@ -200,7 +200,7 @@ $defaultSettings = [
     'seo_keywords' => 'salihli yks koçluğu, salihli öğrenci koçu, tyt koçluğu, ayt koçluğu, mezun koçluğu salihli',
     'seo_google_verification' => '',
     'seo_analytics_id' => '',
-    'notify_email' => 'iletisim@salihlikocluk.com',
+    'notify_email' => 'iletisim@salihlikocluk.com.tr',
     'notify_email_enabled' => '1',
     'notify_telegram_bot_token' => '',
     'notify_telegram_chat_id' => '',
@@ -742,7 +742,7 @@ function send_lead_notifications(array $lead, bool $isTest = false): array
 
     // 1. E-POSTA BİLDİRİMİ
     $emailEnabled = setting('notify_email_enabled', '1') === '1';
-    $toEmail = trim(setting('notify_email', setting('email', 'iletisim@salihlikocluk.com')));
+    $toEmail = trim(setting('notify_email', setting('email', 'iletisim@salihlikocluk.com.tr')));
 
     if ($emailEnabled && !empty($toEmail)) {
         $subject = "=?UTF-8?B?" . base64_encode("{$testPrefix}🔔 Yeni Ön Görüşme Talebi: " . ($lead['name'] ?? 'İsimsiz') . " (" . ($lead['student_level'] ?? 'Genel') . ")") . "?=";
@@ -789,7 +789,7 @@ function send_lead_notifications(array $lead, bool $isTest = false): array
             </div>
 
             <div style="margin-top: 24px; text-align: center;">
-                <a href="https://salihlikocluk.com/admin/?tab=leads" style="display: inline-block; padding: 12px 24px; background: #0f172a; color: #ffffff; text-decoration: none; font-weight: 700; border-radius: 8px; font-size: 14px;">Yönetim Paneline Git →</a>
+                <a href="https://www.salihlikocluk.com.tr/admin/?tab=leads" style="display: inline-block; padding: 12px 24px; background: #0f172a; color: #ffffff; text-decoration: none; font-weight: 700; border-radius: 8px; font-size: 14px;">Yönetim Paneline Git →</a>
             </div>
         </div>
         <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 24px; font-size: 12px; color: #94a3b8; text-align: center;">
@@ -799,7 +799,7 @@ function send_lead_notifications(array $lead, bool $isTest = false): array
 </body>
 </html>';
 
-        $serverHost = $_SERVER['SERVER_NAME'] ?? 'salihlikocluk.com';
+        $serverHost = $_SERVER['SERVER_NAME'] ?? 'www.salihlikocluk.com.tr';
         $headers = [
             'MIME-Version: 1.0',
             'Content-type: text/html; charset=UTF-8',

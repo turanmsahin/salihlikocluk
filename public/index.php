@@ -249,7 +249,7 @@ $defaultContents = [
             ['Hangi bilgiler alınır?', 'Ön görüşme formu; ad soyad, telefon numarası, isteğe bağlı e-posta, öğrencinin sınıf/durum bilgisi ve talebinizi içeren mesajı alır. Mesaj alanına özel nitelikli kişisel veri (sağlık vb.) yazılmamalıdır.'],
             ['Kullanım amacı', 'Toplanan bilgiler, yalnızca ön görüşme talebinize dönüş yapmak ve koçluk süreciyle ilgili iletişimi sağlamak amacıyla site yönetiminde saklanır. Üçüncü taraflara veya harici yazılımlara aktarılmaz.'],
             ['Saklama ve silme', 'Ön görüşme talepleri, süreç tamamlandığında veya talep sahibi silinmesini istediğinde yönetim panelinden güvenli bir biçimde silinir.'],
-            ['Veri sorumlusu ve iletişim', 'Veri Sorumlusu: ' . setting('coach_name', 'Salihli Koçluk') . '. Kişisel verilerinizle ilgili bilgi alma veya silinmesini talep etme hakkınızı ' . (setting('email') ?: 'iletisim@salihlikocluk.com') . ' e-posta adresi üzerinden kullanabilirsiniz.'],
+            ['Veri sorumlusu ve iletişim', 'Veri Sorumlusu: ' . setting('coach_name', 'Salihli Koçluk') . '. Kişisel verilerinizle ilgili bilgi alma veya silinmesini talep etme hakkınızı ' . (setting('email') ?: 'iletisim@salihlikocluk.com.tr') . ' e-posta adresi üzerinden kullanabilirsiniz.'],
         ],
         'cta' => ''
     ],
@@ -331,7 +331,7 @@ $rehberlikLinks = [
 ];
 
 $canonicalPath = $page === 'home' ? '/' : ($page === 'yazi' && $post ? '/blog/' . rawurlencode($post['slug']) : '/' . $page);
-$canonicalUrl = 'https://salihlikocluk.com' . $canonicalPath;
+$canonicalUrl = 'https://www.salihlikocluk.com.tr' . $canonicalPath;
 $slides = ($page === 'home') ? get_slides(true) : [];
 
 // Ziyaretçi ve sayfa kalma süresi analizi (Hafif & Asenkron)
@@ -349,15 +349,15 @@ foreach ($serviceAreas as $areaName) {
 
 $localBusinessSchema = [
     '@type' => ['EducationalOrganization', 'LocalBusiness'],
-    '@id' => 'https://salihlikocluk.com/#localbusiness',
+    '@id' => 'https://www.salihlikocluk.com.tr/#localbusiness',
     'name' => 'Salihli YKS & LGS Öğrenci Koçluğu',
     'alternateName' => ['Salihli Koçluk', 'Salihli Sınav Koçluğu', 'Salihli YKS Koçu'],
-    'url' => 'https://salihlikocluk.com/',
-    'logo' => 'https://salihlikocluk.com/assets/img/logo.png',
-    'image' => 'https://salihlikocluk.com/assets/img/hero.jpg',
+    'url' => 'https://www.salihlikocluk.com.tr/',
+    'logo' => 'https://www.salihlikocluk.com.tr/assets/img/logo.png',
+    'image' => 'https://www.salihlikocluk.com.tr/assets/img/hero.jpg',
     'description' => setting('seo_default_description', 'Salihli’de TYT, AYT ve mezun öğrencilere yönelik fiziksel ofisimizde yüz yüze ve hibrit YKS koçluğu.'),
     'telephone' => setting('phone', '+90 544 344 24 49'),
-    'email' => setting('email', 'iletisim@salihlikocluk.com'),
+    'email' => setting('email', 'iletisim@salihlikocluk.com.tr'),
     'priceRange' => '₺₺',
     'address' => [
         '@type' => 'PostalAddress',
@@ -394,7 +394,7 @@ $breadcrumbsItems = [
         '@type' => 'ListItem',
         'position' => 1,
         'name' => 'Ana Sayfa',
-        'item' => 'https://salihlikocluk.com/'
+        'item' => 'https://www.salihlikocluk.com.tr/'
     ]
 ];
 
@@ -403,7 +403,7 @@ if ($page === 'yazi' && $post) {
         '@type' => 'ListItem',
         'position' => 2,
         'name' => 'Rehber Blog',
-        'item' => 'https://salihlikocluk.com/blog'
+        'item' => 'https://www.salihlikocluk.com.tr/blog'
     ];
     $breadcrumbsItems[] = [
         '@type' => 'ListItem',
@@ -442,13 +442,13 @@ if ($page === 'yazi' && $post) {
         'publisher' => [
             '@type' => 'EducationalOrganization',
             'name' => 'Salihli Koçluk',
-            'url' => 'https://salihlikocluk.com',
+            'url' => 'https://www.salihlikocluk.com.tr',
             'logo' => [
                 '@type' => 'ImageObject',
-                'url' => 'https://salihlikocluk.com/assets/favicon.svg'
+                'url' => 'https://www.salihlikocluk.com.tr/assets/favicon.svg'
             ]
         ],
-        'image' => !empty($post['image_url']) ? 'https://salihlikocluk.com' . $post['image_url'] : 'https://salihlikocluk.com/assets/favicon.svg'
+        'image' => !empty($post['image_url']) ? 'https://www.salihlikocluk.com.tr' . $post['image_url'] : 'https://www.salihlikocluk.com.tr/assets/favicon.svg'
     ];
 
     $articleFaqs = extract_article_faqs($post['content'] ?? '');

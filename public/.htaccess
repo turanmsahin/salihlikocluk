@@ -1,6 +1,10 @@
 Options -Indexes
 RewriteEngine On
 
+# salihlikocluk.com.tr -> www.salihlikocluk.com.tr (301 Yönlendirmesi)
+RewriteCond %{HTTP_HOST} ^salihlikocluk\.com\.tr$ [NC]
+RewriteRule ^(.*)$ https://www.salihlikocluk.com.tr/$1 [R=301,L]
+
 # Güvenlik Başlıkları (Security Headers)
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"

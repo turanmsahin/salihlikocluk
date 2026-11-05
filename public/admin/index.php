@@ -156,7 +156,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $testLead = [
             'name' => 'Örnek Öğrenci / Veli (TEST)',
             'phone' => setting('phone', '+90 544 344 24 49'),
-            'email' => setting('email', 'iletisim@salihlikocluk.com'),
+            'email' => setting('email', 'iletisim@salihlikocluk.com.tr'),
             'student_level' => 'YKS / 12. sınıf',
             'message' => 'Bu bir test bildirimidir. Salihli Koçluk bildirim sisteminin (E-posta, Telegram, Webhook) çalıştığını doğrulamak amacıyla gönderilmiştir.',
             'created_at' => date('Y-m-d H:i:s'),
@@ -573,7 +573,7 @@ if (!empty($selectedPageData['sections']) && is_array($selectedPageData['section
                 </label>
 
                 <label>E-posta Adresi
-                    <input name="email" type="email" maxlength="120" value="<?= e($currentSettings['email'] ?? '') ?>" placeholder="Örn: iletisim@salihlikocluk.com">
+                    <input name="email" type="email" maxlength="120" value="<?= e($currentSettings['email'] ?? '') ?>" placeholder="Örn: iletisim@salihlikocluk.com.tr">
                 </label>
                 <label>Şehir / Konum (Ofis)
                     <input name="location" maxlength="120" value="<?= e($currentSettings['location'] ?? '') ?>" placeholder="Örn: Salihli, Manisa (Fiziksel Ofis)">
@@ -1286,7 +1286,7 @@ if (!empty($selectedPageData['sections']) && is_array($selectedPageData['section
                         Yeni bir ön görüşme talebi geldiğinde e-posta bildirimi gönder
                     </label>
                     <label>Bildirim Gönderilecek E-posta Adresi
-                        <input name="notify_email" type="email" value="<?= e(setting('notify_email', setting('email', 'iletisim@salihlikocluk.com'))) ?>" placeholder="Örn: iletisim@salihlikocluk.com">
+                        <input name="notify_email" type="email" value="<?= e(setting('notify_email', setting('email', 'iletisim@salihlikocluk.com.tr'))) ?>" placeholder="Örn: iletisim@salihlikocluk.com.tr">
                     </label>
                     <small style="color: #64748b; display: block; margin-top: 6px;">Başvuran kişinin adı, telefonu, WhatsApp doğrudan yaz linki, öğrenci seviyesi ve mesajı bu e-posta adresine HTML şablonuyla iletilir.</small>
                 </div>

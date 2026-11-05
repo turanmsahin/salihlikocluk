@@ -9,6 +9,6 @@ $posts = $db->query("SELECT slug, updated_at FROM posts WHERE status = 'publishe
 echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<?php foreach ($pages as $page): ?><url><loc><?= e('https://salihlikocluk.com' . $page) ?></loc></url><?php endforeach; ?>
-<?php foreach ($posts as $post): ?><url><loc><?= e('https://salihlikocluk.com/blog/' . rawurlencode($post['slug'])) ?></loc><lastmod><?= e(date('Y-m-d', strtotime($post['updated_at']))) ?></lastmod></url><?php endforeach; ?>
+<?php foreach ($pages as $page): ?><url><loc><?= e('https://www.salihlikocluk.com.tr' . $page) ?></loc></url><?php endforeach; ?>
+<?php foreach ($posts as $post): ?><url><loc><?= e('https://www.salihlikocluk.com.tr/blog/' . rawurlencode($post['slug'])) ?></loc><lastmod><?= e(date('Y-m-d', strtotime($post['updated_at']))) ?></lastmod></url><?php endforeach; ?>
 </urlset>

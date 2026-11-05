@@ -1,4 +1,4 @@
-# salihlikocluk.com
+# www.salihlikocluk.com.tr
 
 Salihli'de YKS koçluğu için bağımsız, PHP 8 ve SQLite tabanlı tanıtım sitesi.
 Harici dijital koçluk ürünü bu projeye entegre değildir.
