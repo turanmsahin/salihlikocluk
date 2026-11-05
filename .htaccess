@@ -1,0 +1,10 @@
+Options -Indexes
+
+<FilesMatch "^(README\.md|\.gitignore)$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^storage/ - [F,L]
+</IfModule>

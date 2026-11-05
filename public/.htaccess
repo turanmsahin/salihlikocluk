@@ -1,0 +1,31 @@
+Options -Indexes
+RewriteEngine On
+
+# Güvenlik Başlıkları (Security Headers)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Hassas ve Gizli Dosyalara Doğrudan Erişimi Engelle
+<FilesMatch "(^\.|\.(sqlite|sql|log|ini|sh|env|bak|conf)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Allow direct access to physical files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Sitemap rewrite
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# Pass everything else to index.php
+RewriteRule ^ index.php [L,QSA]
