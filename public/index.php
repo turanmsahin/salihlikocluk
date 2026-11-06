@@ -36,6 +36,12 @@ if ($page === '') {
         $_GET['slug'] = substr($requestPath, 5);
     } elseif (isset($pages[$requestPath])) {
         $page = $requestPath;
+    } elseif ($customDbPage = $db->query("SELECT slug, title, meta_description FROM site_pages WHERE slug = " . $db->quote($requestPath))->fetch()) {
+        $page = $requestPath;
+        $pages[$page] = [
+            'title' => $customDbPage['title'] ?: (setting('coach_name', 'Salihli Koçluk') . ' | ' . ucfirst($page)),
+            'description' => $customDbPage['meta_description'] ?: setting('seo_default_description', '')
+        ];
     } else {
         $page = '404';
     }
@@ -259,6 +265,22 @@ $defaultContents = [
 $pageContent = null;
 if (isset($defaultContents[$page])) {
     $pageContent = get_page_content($page, $defaultContents[$page]);
+    if (!empty($pageContent['title'])) {
+        $meta['title'] = $pageContent['title'];
+    }
+    if (!empty($pageContent['description'])) {
+        $meta['description'] = $pageContent['description'];
+    }
+} elseif ($page !== '404' && $page !== 'home' && $page !== 'blog' && $page !== 'yazi') {
+    // Custom dynamically created page from admin panel
+    $pageContent = get_page_content($page, [
+        'title' => $meta['title'] ?? '',
+        'eyebrow' => 'REHBERLİK & BİLGİ',
+        'heading' => $meta['title'] ?? '',
+        'intro' => $meta['description'] ?? '',
+        'sections' => [],
+        'cta' => 'Salihli ofisimizde yüz yüze tanışmak için randevu alabilirsiniz.'
+    ]);
     if (!empty($pageContent['title'])) {
         $meta['title'] = $pageContent['title'];
     }

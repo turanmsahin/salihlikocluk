@@ -274,6 +274,41 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         $_SESSION['admin_notice'] = 'Sayfa içeriği ve görseli başarıyla kaydedildi.';
         header('Location: /admin/?tab=pages&page=' . rawurlencode($slug));
         exit;
+    } elseif (($_POST['action'] ?? '') === 'create_custom_page') {
+        $name = trim((string) ($_POST['page_name'] ?? ''));
+        $rawSlug = trim((string) ($_POST['page_slug'] ?? ''));
+        $slug = slugify($rawSlug !== '' ? $rawSlug : $name);
+        
+        $reserved = ['admin', 'api', 'blog', 'yazi', 'storage', 'assets', 'index.php'];
+        if ($slug === '' || in_array($slug, $reserved, true)) {
+            $_SESSION['admin_error'] = 'Geçersiz sayfa bağlantı adı (slug). Lütfen farklı bir isim girin.';
+        } else {
+            $stmt = $db->prepare('INSERT INTO site_pages (slug, title, heading, intro, eyebrow, cta_text, sections_json, updated_at) VALUES (:slug, :title, :heading, :intro, :eyebrow, :cta_text, :sections_json, CURRENT_TIMESTAMP) ON CONFLICT(slug) DO NOTHING');
+            $stmt->execute([
+                'slug' => $slug,
+                'title' => $name ?: ucfirst($slug),
+                'heading' => $name ?: ucfirst($slug),
+                'intro' => ($name ?: ucfirst($slug)) . ' hakkında detaylı rehberlik ve bilgilendirme.',
+                'eyebrow' => 'REHBERLİK & BİLGİ',
+                'cta_text' => 'Salihli ofisimizde yüz yüze tanışmak için randevu alabilirsiniz.',
+                'sections_json' => '[]',
+            ]);
+            $_SESSION['admin_notice'] = 'Yeni sayfa oluşturuldu! Aşağıdan içeriğini, maddelerini ve görselini düzenleyebilirsiniz.';
+            header('Location: /admin/?tab=pages&page=' . rawurlencode($slug));
+            exit;
+        }
+        header('Location: /admin/?tab=pages');
+        exit;
+    } elseif (($_POST['action'] ?? '') === 'delete_custom_page') {
+        $slug = trim((string) ($_POST['slug'] ?? ''));
+        $corePages = ['yks', 'tyt', 'ayt', 'lgs', 'mezun', 'yazilim', 'veli', 'surec', 'hakkimda', 'gizlilik', 'iletisim'];
+        if (!in_array($slug, $corePages, true) && $slug !== '') {
+            $stmt = $db->prepare('DELETE FROM site_pages WHERE slug = :slug');
+            $stmt->execute(['slug' => $slug]);
+            $_SESSION['admin_notice'] = 'Özel sayfa silindi.';
+        }
+        header('Location: /admin/?tab=pages');
+        exit;
     } elseif (($_POST['action'] ?? '') === 'save_category') {
         $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT) ?: null;
         $name = trim((string) ($_POST['name'] ?? ''));
@@ -470,6 +505,7 @@ $editablePages = [
     'yks' => 'YKS Öğrenci Koçluğu',
     'tyt' => 'TYT Koçluğu',
     'ayt' => 'AYT Koçluğu',
+    'lgs' => 'LGS & 8. Sınıf Koçluğu',
     'mezun' => 'Mezun Öğrenci Koçluğu',
     'yazilim' => 'Yazılım ve Yapay Zekâ Destekli Koçluk',
     'veli' => 'Veli Danışmanlığı',
@@ -478,10 +514,24 @@ $editablePages = [
     'gizlilik' => 'Gizlilik ve KVKK Metni',
 ];
 
+if (is_admin()) {
+    try {
+        $customPagesDb = $db->query("SELECT slug, title FROM site_pages ORDER BY updated_at DESC")->fetchAll();
+        foreach ($customPagesDb as $cp) {
+            if (!empty($cp['slug']) && !isset($editablePages[$cp['slug']])) {
+                $editablePages[$cp['slug']] = '✨ ' . ($cp['title'] ?: ucfirst($cp['slug']));
+            }
+        }
+    } catch (\Throwable $e) {}
+}
+
 $selectedPageSlug = $_GET['page'] ?? 'yks';
 if (!isset($editablePages[$selectedPageSlug])) {
     $selectedPageSlug = 'yks';
 }
+
+$corePagesList = ['yks', 'tyt', 'ayt', 'lgs', 'mezun', 'yazilim', 'veli', 'surec', 'hakkimda', 'gizlilik'];
+$isCustomPage = !in_array($selectedPageSlug, $corePagesList, true);
 
 $selectedPageData = is_admin() ? get_page_content($selectedPageSlug, []) : [];
 $selectedPageSectionsRaw = '';
@@ -845,8 +895,26 @@ if (!empty($selectedPageData['sections']) && is_array($selectedPageData['section
 
     <?php elseif ($tab === 'pages'): ?>
         <section class="admin-section" id="pages">
-            <h2>Sayfa İçerik &amp; SEO Yönetimi</h2>
-            <p class="admin-help-text" style="margin-bottom: 16px;">Düzenlemek istediğiniz sayfayı seçin; başlık, meta açıklaması, ana metin ve alt bölümlerini özelleştirin.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+                <div>
+                    <h2>Sayfa İçerik &amp; SEO Yönetimi</h2>
+                    <p class="admin-help-text" style="margin-bottom: 0;">Düzenlemek istediğiniz sayfayı seçin; başlık, meta açıklaması, ana metin, maddeler ve görsellerini özelleştirin.</p>
+                </div>
+                <details style="background: #f1f5f9; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px;">
+                    <summary style="cursor: pointer; font-weight: 700; color: #0f172a; font-size: 13px;">➕ Yeni Özel Sayfa Ekle</summary>
+                    <form method="post" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                        <input type="hidden" name="action" value="create_custom_page">
+                        <label style="font-size: 12px; font-weight: 600;">Sayfa Başlığı:
+                            <input name="page_name" placeholder="Örn: MSÜ Sınav Koçluğu" required style="padding: 6px 10px; font-size: 13px;">
+                        </label>
+                        <label style="font-size: 12px; font-weight: 600;">Bağlantı Adı (URL / Slug):
+                            <input name="page_slug" placeholder="Örn: msu veya online-kocluk" style="padding: 6px 10px; font-size: 13px;">
+                        </label>
+                        <button class="button button-primary" type="submit" style="font-size: 12px; padding: 6px 12px;">Sayfayı Oluştur ve Düzenle →</button>
+                    </form>
+                </details>
+            </div>
             
             <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
                 <?php foreach ($editablePages as $slugKey => $name): ?>
@@ -861,9 +929,16 @@ if (!empty($selectedPageData['sections']) && is_array($selectedPageData['section
                 <input type="hidden" name="action" value="save_page">
                 <input type="hidden" name="slug" value="<?= e($selectedPageSlug) ?>">
 
-                <div style="grid-column: 1 / -1; padding: 12px 16px; background: #eef3ec; border-radius: 6px; font-weight:600;">
-                    Düzenlenen Sayfa: <span style="color:#204030;"><?= e($editablePages[$selectedPageSlug]) ?></span>
-                    <a href="/?page=<?= e($selectedPageSlug) ?>" target="_blank" style="margin-left: 12px; font-size:11px; text-decoration:underline;">Sayfayı Aç ↗</a>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #eef3ec; border-radius: 6px; font-weight:600;">
+                    <div>
+                        Düzenlenen Sayfa: <span style="color:#204030;"><?= e($editablePages[$selectedPageSlug]) ?></span>
+                        <a href="/<?= e($selectedPageSlug) ?>" target="_blank" style="margin-left: 12px; font-size:11px; text-decoration:underline;">Sayfayı Aç ↗</a>
+                    </div>
+                    <?php if ($isCustomPage): ?>
+                        <button type="submit" form="delete-page-form" class="button button-outline" style="color: #dc2626; border-color: #fca5a5; font-size: 11px; padding: 4px 10px;" onclick="return confirm('Bu özel sayfayı kalıcı olarak silmek istediğinize emin misiniz?');">
+                            🗑️ Bu Özel Sayfayı Sil
+                        </button>
+                    <?php endif; ?>
                 </div>
 
                 <label>Sayfa SEO Başlığı (Meta Title)
@@ -918,6 +993,13 @@ if (!empty($selectedPageData['sections']) && is_array($selectedPageData['section
 
                 <button class="button button-primary" type="submit" style="grid-column: 1 / -1;">Bu Sayfayı Kaydet</button>
             </form>
+            <?php if ($isCustomPage): ?>
+                <form id="delete-page-form" method="post" style="display: none;">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="action" value="delete_custom_page">
+                    <input type="hidden" name="slug" value="<?= e($selectedPageSlug) ?>">
+                </form>
+            <?php endif; ?>
         </section>
 
     <?php elseif ($tab === 'faqs'): ?>
